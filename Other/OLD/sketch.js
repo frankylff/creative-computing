@@ -14,7 +14,3 @@ function draw() {
         circle(random(width),random(height),random(5,15));
     }
 }
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-}
