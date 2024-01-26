@@ -1,0 +1,24 @@
+body {
+    background: #fee;
+    color: rgb(0,0,255);
+}
+
+ul {
+    color: rgb(0,0,0);
+}
+
+img {
+    border-radius: 10px;
+}
+
+.item {
+    font-family: Arial, Helvatica;
+}
+
+#first-item {
+    font-style: italic;
+}
+
+.item .first-item {
+    font-family: Arial, Helvatica;
+}
