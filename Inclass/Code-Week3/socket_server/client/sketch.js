@@ -14,7 +14,7 @@ function onMessage(event){
 }
 
 function mouseDragged() {
-  //line(pmouseX, pmouseY, mouseX, mouseY);
+  line(pmouseX, pmouseY, mouseX, mouseY);
   const data = {
     "px": pmouseX,
     "py": pmouseY,
