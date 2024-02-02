@@ -1,8 +1,8 @@
-import {WebSockectServer} from 'ws';
+import { WebSocketServer } from 'ws';
 const wss = new WebSocketServer({port: 3000});
 wss.on('connection', onConnection);
 
-function onConnection (ws){
+function onConnection(ws){
     ws.on('message', onMessage);
 }
 
