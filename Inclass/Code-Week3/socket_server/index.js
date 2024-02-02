@@ -7,9 +7,8 @@ function onConnection(ws){
 }
 
 function onMessage(data){
-    let jsonData = JSON.parse(data);
-    for (let i = 0; i < wss.clients.length; i++){
-        const c = wss.clients[i];
-        c.send(data);
-    }
+    let jd = JSON.parse(data);
+    wss.clirnt.forEach( clinet => {
+        client.send(JSON.stringify(data));
+    })
 }

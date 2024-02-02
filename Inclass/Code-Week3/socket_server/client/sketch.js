@@ -5,10 +5,23 @@ function setup() {
   background(220);
 
   ws = new WebSocket("ws://localhost:3000")
+  ws.onmesssage = onMessage;
+}
+
+function onMessage(event){
+  const json = JSON.parse(event.data);
+  listenerCount(json.px, json.py, json.x, json.y);
 }
 
 function mouseDragged() {
-  line(pmouseX, pmouseY, mouseX, mouseY);
+  //line(pmouseX, pmouseY, mouseX, mouseY);
+  const data = {
+    "px": pmouseX,
+    "py": pmouseY,
+    "x": mouseX,
+    "y": mouseY,
+  };
+  ws.send(JSON.stringify(data));
 }
 
 function windowResized() {
