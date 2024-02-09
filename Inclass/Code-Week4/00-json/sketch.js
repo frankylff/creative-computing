@@ -1,6 +1,4 @@
-
 let data;
-
 function setup() {
     canvas = createCanvas(400, 400);
     let myArr = [];
