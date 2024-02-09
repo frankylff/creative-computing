@@ -1,21 +1,28 @@
 let data;
-let btn;
+let resPromise;
 
+/*
 function preload(){
     data = loadJSON('data.json');
 }
+*/
 
 function setup() {
     createCanvas(400, 400);
     background(220);
-    btn = creatBotton('click me');
-    btn.position(0, 430);
-    btn.mousePressed( event => background(random(255)) );
+
+    resPromise = fetch('data.json');
+    resPromise.then( (res) => {
+        res.json().then( jsonObj => {
+            data = jsonObj;
+        });
+    });
 }
 
-/*
 function draw() {
-    background(200);
+    background(220);
+    if (!data) return;
+
     for (let i = 0; i < data.shapes.length; i++){
         let shapeObj = data.shapes[i];
         fill(shapeObj.color);
@@ -26,4 +33,3 @@ function draw() {
         }
     }
 }
-*/
