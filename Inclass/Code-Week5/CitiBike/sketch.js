@@ -7,7 +7,7 @@ function preload() {
 
 function setup() {
     createCanvas(600, 600);
-    console.log('stations:', data.stations.lenght);
+    console.log('stations:', data.stations.length);
     const lats = data.stations.map(station => station.lat);
     maxLat = Math.max(...lats);
 }
