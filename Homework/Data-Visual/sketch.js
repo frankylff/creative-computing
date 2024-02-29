@@ -1,7 +1,10 @@
 let data;
 let tempData = [];
+let rainData = [];
 let maxYearT = -Infinity;
 let minYearT = Infinity;
+let maxYearR = -Infinity;
+let minYearR = Infinity;
 let tempColor = [];
 
 function preload(){
@@ -15,6 +18,50 @@ function setup() {
     getTempColor();
 }
 
+function getRain(){
+    for(let i = 1; i <= 12; i++){
+        let month = i < 10? "0" + i: "" + i;
+        for(let j = 1; j <= 31; j ++){
+            let day = j < 10? "0" + j: "" + j;
+            let date = day + "." + month;
+
+            let maxR = -Infinity;
+            let minR = Infinity;
+            let sumR = 0;
+            let count = 0;
+            let canPush = false;
+    
+            for(let row of data.rows){
+                if(row.get("TIME").startsWith(day + "." + month)){
+                    let rain = Number(row.get("RRR"));
+                    canPush = true;
+                    if(!isNaN(rain)){
+                        sumR += rain;
+                        count ++;
+                        if(rain > maxR){
+                        maxR = rain;
+                        }
+                        if(rain < minR){
+                        minR = rain;
+                        }
+                    }
+                }
+            }
+
+            let meanR = sumR/count;
+            if(canPush){
+                rainData.push({date, maxR, minR, meanR})
+            }
+
+            if(maxR > maxYearR){
+                maxYearR = maxR;
+            }
+            if(minR < minYearR){
+                minYearR = minR;
+            }
+        }
+    }
+}
 
 function getTemp(){
     for(let i = 1; i <= 12; i++){
@@ -23,9 +70,9 @@ function getTemp(){
             let day = j < 10? "0" + j: "" + j;
             let date = day + "." + month;
 
-            let max = -Infinity;
-            let min = Infinity;
-            let sum = 0;
+            let maxT = -Infinity;
+            let minT = Infinity;
+            let sumT = 0;
             let count = 0;
             let canPush = false;
     
@@ -33,28 +80,28 @@ function getTemp(){
                 if(row.get("TIME").startsWith(day + "." + month)){
                     let temp = Number(row.get("T"));
                     canPush = true;
-                    sum += temp;
+                    sumT += temp;
                     count ++;
 
-                    if(temp > max){
-                        max = temp;
+                    if(temp > maxT){
+                        maxT = temp;
                     }
-                    if(temp < min){
-                        min = temp;
+                    if(temp < minT){
+                        minT = temp;
                     }
                 }
             }
 
-            let mean = sum/count;
+            let meanT = sumT/count;
             if(canPush){
-                tempData.push({date, max, min, mean})
+                tempData.push({date, maxT, minT, meanT})
             }
 
-            if(max > maxYearT){
-                maxYearT = max;
+            if(maxT > maxYearT){
+                maxYearT = maxT;
             }
-            if(min < minYearT){
-                minYearT = min;
+            if(minT < minYearT){
+                minYearT = minT;
             }
         }
     }
@@ -81,21 +128,43 @@ function displayT(){
         let angle = map(i, 0, tempData.length, 0, TWO_PI);
         rotate(angle);
 
-        let colorIndex = int(map(temp["mean"], -8, 41, tempColor.length, 0));
+        let colorIndex = int(map(temp["meanT"], -8, 41, tempColor.length, 0));
         let color = tempColor[colorIndex];
         stroke(color, 50, 90);
         strokeWeight(2);
         noFill();
         
-        let lowY = map(temp["min"], -8, 41, 50, 300);
-        let highY = map(temp["max"], -8, 41, 50, 300);
+        let lowY = map(temp["minT"], -8, 41, 50, 300);
+        let highY = map(temp["maxT"], -8, 41, 50, 300);
         line(0, lowY, 0, highY);
 
         pop();
     }
 }
 
+function displayR(){
+    for(let i = 0; i < rainData.length; i++){
+        let rain = rainData[i];
+        let r = map(Number(rain["meanR"]), 0, 65, 0, 50);
+
+        if(r>2){
+            let temp = tempData[i];
+            let angle = map(i, 0, tempData.length, 0, TWO_PI);
+            let locY = map(temp["meanT"], -8, 41, 100, 300)
+
+            push();
+            translate(width/2, height/2);
+            rotate(angle);
+            noStroke();
+            fill(220, 80, 80, 30);
+            circle(0, locY, r*2);
+            pop();
+        }
+    }
+}
+
 function draw() {
     displayT();
+    displayR();
     noLoop();
 }
