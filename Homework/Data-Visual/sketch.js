@@ -12,7 +12,7 @@ function preload(){
 }
 
 function setup() {
-    createCanvas(600, 600)
+    createCanvas(800, 800)
     getTemp();
     getRain()
     getTempColor();
@@ -130,12 +130,12 @@ function displayT(){
 
         let colorIndex = int(map(temp["meanT"], -8, 41, tempColor.length, 0));
         let color = tempColor[colorIndex];
-        stroke(color, 50, 90);
-        strokeWeight(2);
+        stroke(color, 60, 90);
+        strokeWeight(3);
         noFill();
         
-        let lowY = map(temp["minT"], -8, 41, 50, 300);
-        let highY = map(temp["maxT"], -8, 41, 50, 300);
+        let lowY = map(temp["minT"], -8, 41, 50, 350);
+        let highY = map(temp["maxT"], -8, 41, 50, 350);
         line(0, lowY, 0, highY);
 
         pop();
@@ -155,7 +155,8 @@ function displayR(){
             push();
             translate(width/2, height/2);
             rotate(angle);
-            noStroke();
+            stroke(360);
+            strokeWeight(3);
             fill(220, 80, 80, 30);
             circle(0, locY, r*2);
             pop();
