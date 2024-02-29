@@ -1,12 +1,20 @@
-let tempData = [];
 let data;
+let tempData = [];
 let maxYearT = -Infinity;
 let minYearT = Infinity;
-let tempColor;
+let tempColor = [];
 
 function preload(){
     data = loadTable("Data/ZhengzhouWeather.csv", "header");
 }
+
+function setup() {
+    createCanvas(600, 600)
+    getTemp();
+    getRain()
+    getTempColor();
+}
+
 
 function getTemp(){
     for(let i = 1; i <= 12; i++){
@@ -15,9 +23,9 @@ function getTemp(){
             let day = j < 10? "0" + j: "" + j;
             let date = day + "." + month;
 
-            let maxT = -Infinity;
-            let minT = Infinity;
-            let sumT = 0;
+            let max = -Infinity;
+            let min = Infinity;
+            let sum = 0;
             let count = 0;
             let canPush = false;
     
@@ -25,39 +33,69 @@ function getTemp(){
                 if(row.get("TIME").startsWith(day + "." + month)){
                     let temp = Number(row.get("T"));
                     canPush = true;
-                    sumT += temp;
+                    sum += temp;
                     count ++;
 
-                    if(temp > maxT){
-                        maxT = temp;
+                    if(temp > max){
+                        max = temp;
                     }
-                    if(temp < minT){
-                        minT = temp;
+                    if(temp < min){
+                        min = temp;
                     }
                 }
             }
 
-            let meanT = sumT/count;
+            let mean = sum/count;
             if(canPush){
-                tempData.push({date, maxT, minT, meanT})
+                tempData.push({date, max, min, mean})
             }
 
-            if(maxT > maxYearT){
-                maxYearT = maxT;
+            if(max > maxYearT){
+                maxYearT = max;
             }
-            if(minT < minYearT){
-                minYearT = minT;
+            if(min < minYearT){
+                minYearT = min;
             }
         }
     }
 }
 
-function setup() {
-    createCanvas(800, 800)
-    getTemp();
-    getTempColor();
-    displayT();
+function getTempColor(){
+    colorMode(HSB, 360, 100, 100, 100);
+    for(let i = -20; i < 250;){
+        tempColor.push((i + 360) % 360);
+        if(i > 20 && i < 180){
+            i += 3;
+        }
+        i++;
+    }
+}
+
+function displayT(){
+    for(let i = 0; i < tempData.length; i++){
+        let temp = tempData[i];
+
+        push();
+        translate(width/2, height/2);
+
+        let angle = map(i, 0, tempData.length, 0, TWO_PI);
+        rotate(angle);
+
+        let colorIndex = int(map(temp["mean"], -8, 41, tempColor.length, 0));
+        let color = tempColor[colorIndex];
+        stroke(color, 50, 90);
+        strokeWeight(2);
+        noFill();
+        
+        let lowY = map(temp["min"], -8, 41, 50, 300);
+        let highY = map(temp["max"], -8, 41, 50, 300);
+        line(0, lowY, 0, highY);
+
+        pop();
+    }
 }
 
 function draw() {
+    displayT();
+    noLoop();
 }
