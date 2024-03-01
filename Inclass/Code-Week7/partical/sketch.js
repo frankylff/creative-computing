@@ -11,5 +11,5 @@ function draw(){
 }
 
 function mousePressed(){
-    ps.addParticles(30, createVector(mouseX, mouseY));
+    ps.addParticles(80, createVector(mouseX, mouseY));
 }

@@ -7,15 +7,31 @@ class ParticleSystem {
         let size = 10;
         for(let i = 0; i < num; i++){
             let p = new RigidBody(loc.x, loc.y, size);
+            let rf = p5.Vector.random2D().mult(random(2));
+            p.applyForce(rf);
             this.particles.push(p);
         }
     }
 
     update(){
-        this.particles.forEach( p => {
+        for (let i = 0; i < this.particles.length; i++){
+            let p =  this.particles[i];
+
+            for (let j = i+1; j < this.particles.lenghth; j++){
+                let otherP = this.particles[j];
+                let distance = p.loc.dist(otherP.loc);
+                if (distance < (p.size + otherP.size)/2){
+                    let push = p5.Vector.sub(p.loc, otherP.loc);
+                    push.mormalize();
+                    push.div(distance*2);
+                    push.limit(0.05);
+                    p.applyForce(push);
+                    otherP.appltForce(push.mult(-1));
+                }
+            }
             p.update();
             p.bounce();
-        });
+        }
     }
 
     display(){
