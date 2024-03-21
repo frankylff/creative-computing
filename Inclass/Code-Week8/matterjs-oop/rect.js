@@ -1,14 +1,14 @@
 class Rect extends Shape {
-    constructor(world, pos, size, options){
-        super(world, pos, size, options);
+    constructor(world, pos, size, options) {
+      super(world, pos, size, options);
     }
-
-    createBody(pos){
-        return Matter.Bodies.rectangle(pos.x, pos.y, this.size.x, this.size.y, options);
+  
+    createBody() {
+      return Matter.Bodies.rectangle(
+        this.pos.x, this.pos.y, this.size.w, this.size.h, this.options);
     }
-
-    display(){
-        rect(this.body.position.x, this.body.position.y, this.size.x, this.size.y);
+  
+    drawShape() {
+      rect(0, 0, this.size.w, this.size.h);
     }
-
-} 
+  }
