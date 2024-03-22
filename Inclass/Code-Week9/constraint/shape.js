@@ -18,7 +18,7 @@ class Shape {
   }
 
   isDead(){
-    if (this.body.position.y > height){
+    if (this.body.position.y > height + 100){
       Matter.Composite.remove(this.world, this.body);
       return true;
     }
