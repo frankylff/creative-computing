@@ -17,5 +17,19 @@ class Shape {
     
   }
 
+  isDead(){
+    if (this.body.position.y > height){
+      Matter.Composite.remove(this.world, this.body);
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  animAngle(targetAngle){
+    let angle = lerp(this.body.angle, targetAngle, 0.3);
+    Matter.Body.setAngle(this.body, angle);
+  }
 
 }
