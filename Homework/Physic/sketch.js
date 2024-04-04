@@ -15,7 +15,7 @@ let cylinderC;
 let dam;
 let piston;
 
-let balls = [];
+let waters = [];
 let runner;
 let constraint;
 let constraintB;
@@ -104,9 +104,9 @@ Render.run(render);
     World.add(world, [waterwheel, cylinderA, cylinderB, cylinderC, dam, piston, constraint, constraintB]);
 
     setInterval(function() {
-        if (balls.length < 300) {
+        if (waters.length < 300) {
             let x = random(0, 300);
-            let ball = Bodies.circle(x, 0, 10, 
+            let water = Bodies.circle(x, -10, 10, 
                 { label: 'circle', 
                 render:{
                 fillStyle: '#87CEEB',
@@ -114,23 +114,23 @@ Render.run(render);
                 lineWidth: 1}
                 }
             ); 
-            balls.push(ball);
-            World.add(world, ball);
+            waters.push(water);
+            World.add(world, water);
         }
-        if (ball.position.y > height) {
-            balls.splice(i, 1);
-            World.remove(world, ball);
+        if (water.position.y > height) {
+            waters.splice(i, 1);
+            World.remove(world, water);
         }
-    }, 5);
+    }, 1);
 
 }
 
 function draw() {
-    for (let i = balls.length - 1; i >= 0; i--) {
-        let ball = balls[i];
-        if (ball.position.y > height + 100) {
-            balls.splice(i, 1);
-            World.remove(world, ball);
+    for (let i = waters.length - 1; i >= 0; i--) {
+        let water = waters[i];
+        if (water.position.y > height + 100) {
+            waters.splice(i, 1);
+            World.remove(world, water);
         }
     }
 }
