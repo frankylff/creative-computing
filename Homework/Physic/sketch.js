@@ -106,7 +106,7 @@ Render.run(render);
     setInterval(function() {
         if (waters.length < 300) {
             let x = random(0, 300);
-            let water = Bodies.circle(x, -10, 10, 
+            let water = Bodies.circle(x, -10, 8, 
                 { label: 'circle', 
                 render:{
                 fillStyle: '#87CEEB',
@@ -121,7 +121,7 @@ Render.run(render);
             waters.splice(i, 1);
             World.remove(world, water);
         }
-    }, 1);
+    }, 3);
 
 }
 
